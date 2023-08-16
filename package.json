@@ -1,0 +1,23 @@
+{
+  "name": "misc-tools",
+  "version": "1.0.0",
+  "description": "Uma sistema para reunir algumas ferramentas de produtividade.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jefferson-F-Ribeiro/misc-tools.git"
+  },
+  "keywords": [
+    "tools",
+    "prod"
+  ],
+  "author": "Jefferson Ribeiro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jefferson-F-Ribeiro/misc-tools/issues"
+  },
+  "homepage": "https://github.com/Jefferson-F-Ribeiro/misc-tools#readme"
+}
