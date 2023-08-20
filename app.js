@@ -1,30 +1,17 @@
 const http = require('http');
-
-function generateHomePage(){
-	return `
-		<a href="/about">Ir para a Página Sobre</a><br>
-		Bem vindo ao meu aplicativo!
-		`;
-}
-
-function generateAboutPage(){
-	return `
-		<a href="/">Voltar para a Página Inicial</a><br>
-		Página Sobre
-		`;	
-}
+const functions = require('./functions');
 
 const server = http.createServer((req, res) => {
 	if(req.url == '/'){
 		res.statusCode = 200;
 		res.writeHead(200, {'Content-Type': 'text/html'});
-		res.end(generateHomePage());
+		res.end(functions.generateHomePage());
 	}
 
 	else if(req.url == '/about'){
 		res.statusCode = 200;
 		res.writeHead(200, {'Content-Type': 'text/html'});
-		res.end(generateAboutPage());	
+		res.end(functions.generateAboutPage());	
 	}
 	
 	else {
