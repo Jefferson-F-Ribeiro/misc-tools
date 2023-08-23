@@ -27,8 +27,10 @@ const server = http.createServer((req, res) => {
 			body += chunk.toString();
 		});
 		req.on('end', () => {
-			const newTask = functions.parseRequestBody(body);
+			const formData = new URLSearchParams(body);
+			const newTask = formData.get('task');
 			taskmaster.addTask(newTask);
+
 			res.writeHead(302, { Location: '/taskmaster'});
 			res.end();
 		});

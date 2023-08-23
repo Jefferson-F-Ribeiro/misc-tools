@@ -4,6 +4,7 @@ let tasks = [];
 try {
 	const data = fs.readFileSync('tasks.json', 'utf8');
 	tasks = JSON.parse(data);
+	
 } catch (error) {
 	console.log('Erro ao carregar as tarefas:', error.message);
 }
