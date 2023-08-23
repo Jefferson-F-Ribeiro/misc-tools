@@ -38,7 +38,7 @@ function generateTaskmasterPage(){
 	const header = generateHeader("Taskmaster");
 	
 	try{
-	const taskList = tasks.map((task, index) => {
+	const taskList = taskmaster.getTasks().map((task, index) => {
 		return `${index + 1}. [${task.completed ? 'x' : ' '}] ${task.task}<br>`;
 	}).join('');
 	r = `
@@ -59,9 +59,10 @@ function generateTaskmasterPage(){
 		O Taskmaster é um gadget que te ajuda a organizar suas tarefas. <br>		
 		Cadastre sua primeira task:
 
-		<form> <label> Nova Tarefa: </label>
+		<form action="/taskmaster/addtask" method="post"> 
+		<label for= "task">Nova Tarefa: </label>
 		<input type="text" id="task" name="task">
-		<button type="submit">Adicionar</button>
+		<button type="submit" name="submit">Adicionar</button>
 		</form>
 
 		</body>
@@ -72,9 +73,20 @@ function generateTaskmasterPage(){
 	return r;	
 }
 
+function parseRequestBody(body) {
+	const pairs = body.split('&');
+	const data = {};
+	pairs.forEach((pair) => {
+		const [key, value] = pair.split('=');
+		data[key] = decodeURIComponent(value);
+	});
+	return data.task;	
+}
+
 module.exports = {
 	generateHeader,
 	generateHomePage,
 	generateAboutPage,
-	generateTaskmasterPage
+	generateTaskmasterPage,
+	parseRequestBody
 };

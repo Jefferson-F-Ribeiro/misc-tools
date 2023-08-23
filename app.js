@@ -1,5 +1,6 @@
 const http = require('http');
 const functions = require('./functions');
+const taskmaster = require('./taskmaster');
 
 const server = http.createServer((req, res) => {
 	if(req.url == '/'){
@@ -18,6 +19,19 @@ const server = http.createServer((req, res) => {
 		res.statusCode = 200;
 		res.writeHead(200, {'Content-Type': 'text/html'});
 		res.end(functions.generateTaskmasterPage());
+	}
+
+	else if(req.method == 'POST' && req.url == '/taskmaster/addtask'){
+		let body = '';
+		req.on('data', (chunk) => {
+			body += chunk.toString();
+		});
+		req.on('end', () => {
+			const newTask = functions.parseRequestBody(body);
+			taskmaster.addTask(newTask);
+			res.writeHead(302, { Location: '/taskmaster'});
+			res.end();
+		});
 	}
 	
 	else {
