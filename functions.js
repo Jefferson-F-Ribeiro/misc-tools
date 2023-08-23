@@ -17,6 +17,7 @@ function generateHomePage(){
 		<body>
 		Bem vindo ao meu aplicativo! <br>
 		<a href="/about">Ir para a Página Sobre</a><br>
+		<a href="/taskmaster">Taskmaster</a><br>
 		</body>
 		</html>
 		`;
@@ -90,7 +91,10 @@ function decodeTasks(tasks) {
 
 function generateTaskList(tasks) {
 	return tasks.map((task, index) => {
-		return `${index +1}. [${task.completed ? 'x' : ' '}] ${task.task}<br>`;
+		const checkbox = task.completed
+		? `<input type="checkbox" disable checked>`
+		: `<a href="/taskmaster/completetask/${index}"><input type="checkbox"></a>`;
+		return `${index +1}. ${checkbox} ${task.task}<br>`;
 	}).join('');
 }
 
