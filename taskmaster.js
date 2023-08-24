@@ -25,6 +25,13 @@ function completeTask(index) {
 	}
 }
 
+function relistTask(index) {
+	if(index >= 0 && index < tasks.length) {
+		tasks[index].completed = false;
+		saveTasks();
+	}
+}
+
 function getTasks() {
 	return tasks;
 }
@@ -33,5 +40,6 @@ module.exports = {
 	saveTasks,
 	addTask,
 	completeTask,
-	getTasks
+	getTasks,
+	relistTask
 };
