@@ -32,6 +32,13 @@ function relistTask(index) {
 	}
 }
 
+function deleteTask(index) {
+	if(index >= 00 && index < tasks.length){
+		tasks.splice(index, 1);
+		saveTasks();
+	}
+}
+
 function getTasks() {
 	return tasks;
 }
@@ -41,5 +48,6 @@ module.exports = {
 	addTask,
 	completeTask,
 	getTasks,
+	deleteTask,
 	relistTask
 };

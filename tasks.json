@@ -1,14 +1,6 @@
 [
   {
-    "task": "Estudar Javascript",
-    "completed": true
-  },
-  {
     "task": "Lavar a roupa",
-    "completed": true
-  },
-  {
-    "task": "",
     "completed": false
   }
 ]

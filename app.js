@@ -49,6 +49,19 @@ const server = http.createServer((req, res) => {
 
 	}
 
+	else if(req.url.startsWith('/taskmaster/deletetask/')){
+		const index = parseInt(url.pathname.split('/taskmaster/deletetask/')[1]);
+		if (!isNaN(index)) {
+			taskmaster.deleteTask(index);
+			res.writeHead(302, { Location: '/taskmaster'});
+			res.end();
+		} else {
+			res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8'});
+			res.end('404 página não encontrada\n');	
+		}
+
+	}
+
 	else if(req.method == 'POST' && req.url == '/taskmaster/addtask'){
 		let body = '';
 		req.on('data', (chunk) => {
