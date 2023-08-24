@@ -40,15 +40,22 @@ function generateTaskmasterPage(){
 	
 	try{
 	const tasks = taskmaster.getTasks();
-	const decodedTasks = decodeTasks(tasks);
-	const taskList = generateTaskList(decodedTasks);
+	const done = tasks.filter(task => task.completed);
+	const todo = tasks.filter(task => !task.completed);
+	const decodedTasksDONE = decodeTasks(done);
+	const decodedTasksTODO = decodeTasks(todo);
+	const doneList = generateTaskList(decodedTasksDONE);
+	const todoList = generateTaskList(decodedTasksTODO);
+
 
 	r = `
 		${header}
 		<body>
 		O Taskmaster é uma aplicação que te ajuda a organizar suas tarefas. <br>
 		<h2> Lista de Tarefas: </h2>
-		${taskList}
+		${todoList}
+		<h2> Concluídas: </h2>
+		${doneList}
 
 		<form action="/taskmaster/addtask" method="post"> 
 		<label for= "task">Nova Tarefa: </label>
@@ -91,10 +98,11 @@ function decodeTasks(tasks) {
 
 function generateTaskList(tasks) {
 	return tasks.map((task, index) => {
-		const checkbox = task.completed
-		? `<input type="checkbox" disable checked>`
-		: `<a href="/taskmaster/completetask/${index}"><input type="checkbox"></a>`;
-		return `${index +1}. ${checkbox} ${task.task}<br>`;
+		const buttonAction = task.completed
+		? 'Relistar' : 'Concluir';
+		const buttonLink = `/taskmaster/completetask/${index}`;
+		const button = `<a href="${buttonLink}"><button>${buttonAction}</button></a>`;
+		return `${index +1}. ${button} ${task.task}<br>`;
 	}).join('');
 }
 

@@ -3,6 +3,8 @@ const functions = require('./functions');
 const taskmaster = require('./taskmaster');
 
 const server = http.createServer((req, res) => {
+	const url = new URL(req.url, `http://${req.headers.host}`);
+	
 	if(req.url == '/'){
 		res.statusCode = 200;
 		res.writeHead(200, {'Content-Type': 'text/html'});
@@ -21,7 +23,7 @@ const server = http.createServer((req, res) => {
 		res.end(functions.generateTaskmasterPage());
 	}
 	
-	else if(url.pathname.startsWith('/taskmaster/completetask/')){
+	else if(req.url.startsWith('/taskmaster/completetask/')){
 		const index = parseInt(url.pathname.split('/taskmaster/completetask/')[1]);
 		if (!isNaN(index)) {
 			taskmaster.completeTask(index);
