@@ -16,7 +16,7 @@ function generateHomePage(){
 		${header}
 		<body>
 		Bem vindo ao meu aplicativo! <br>
-		<a href="/about">Ir para a Página Sobre</a><br>
+		<a href="/about">Sobre</a><br>
 		<a href="/taskmaster">Taskmaster</a><br>
 		</body>
 		</html>
@@ -40,12 +40,9 @@ function generateTaskmasterPage(){
 	
 	try{
 	const tasks = taskmaster.getTasks();
-	const done = tasks.filter(task => task.completed);
-	const todo = tasks.filter(task => !task.completed);
-	const decodedTasksDONE = decodeTasks(done);
-	const decodedTasksTODO = decodeTasks(todo);
-	const doneList = generateTaskList(decodedTasksDONE);
-	const todoList = generateTaskList(decodedTasksTODO);
+	const decodedTasks = decodeTasks(tasks);
+	const taskList = generateTaskList(decodedTasks);
+	const completedList = generateCompletedTaskList(decodedTasks);
 
 
 	r = `
@@ -53,10 +50,11 @@ function generateTaskmasterPage(){
 		<body>
 		O Taskmaster é uma aplicação que te ajuda a organizar suas tarefas. <br>
 		<h2> Lista de Tarefas: </h2>
-		${todoList}
+		${taskList}
+		<br>
 		<h2> Concluídas: </h2>
-		${doneList}
-
+		${completedList}
+		<br>
 		<form action="/taskmaster/addtask" method="post"> 
 		<label for= "task">Nova Tarefa: </label>
 		<input type="text" id="task" name="task">
@@ -97,7 +95,14 @@ function decodeTasks(tasks) {
 }
 
 function generateTaskList(tasks) {
-	return tasks.map((task, index) => {
+	const incompleteTasks = [];
+	for(let i = 0; i < tasks.length; i++){
+		if(!tasks[i].completed){
+			incompleteTasks.push(tasks[i]);
+		}
+	}
+
+	return incompleteTasks.map((task, index) => {
 		const buttonAction = task.completed
 		? 'Relistar' : 'Concluir';
 		const buttonLink = task.completed
@@ -106,7 +111,28 @@ function generateTaskList(tasks) {
 		const deleteLink = `/taskmaster/deletetask/${index}`;
 		const deleteButton = `<a href="${deleteLink}"><button>Deletar</button></a>`;
 		const button = `<a href="${buttonLink}"><button>${buttonAction}</button></a>`;
-		return `${index +1}. ${task.task} ${button} ${deleteButton}<br>`;
+		return `${index +1}. ${task.task} [${task.completed}] [${index}] ${button} ${deleteButton}<br>`;
+	}).join('');
+}
+
+function generateCompletedTaskList(tasks) {
+	const completedTasks = [];
+	for(let i = 0; i < tasks.length; i++){
+		if(tasks[i].completed){
+			completedTasks.push(tasks[i]);
+		}
+	}
+
+	return completedTasks.map((task, index) => {
+		const buttonAction = task.completed
+		? 'Relistar' : 'Concluir';
+		const buttonLink = task.completed
+		? `/taskmaster/relisttask/${index}`
+		: `/taskmaster/completetask/${index}`;
+		const deleteLink = `/taskmaster/deletetask/${index}`;
+		const deleteButton = `<a href="${deleteLink}"><button>Deletar</button></a>`;
+		const button = `<a href="${buttonLink}"><button>${buttonAction}</button></a>`;
+		return `${index +1}. ${task.task} [${task.completed}] [${index}] ${button} ${deleteButton}<br>`;
 	}).join('');
 }
 

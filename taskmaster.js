@@ -27,13 +27,13 @@ function completeTask(index) {
 
 function relistTask(index) {
 	if(index >= 0 && index < tasks.length) {
-		tasks[index].completed = false;
+		tasks[index].completed = !tasks[index].completed;
 		saveTasks();
 	}
 }
 
 function deleteTask(index) {
-	if(index >= 00 && index < tasks.length){
+	if(index >= 0 && index < tasks.length){
 		tasks.splice(index, 1);
 		saveTasks();
 	}
