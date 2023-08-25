@@ -108,7 +108,7 @@ function generateTaskList(source) {
 		? `/taskmaster/relisttask/${index}`
 		: `/taskmaster/completetask/${index}`;
 		
-		const path = !task.completed
+		const path = task.completed
 		? `/taskmaster/deletetask/done/${index}` : `/taskmaster/deletetask/task/${index}`;
 
 		const deleteLink = path;
@@ -117,7 +117,7 @@ function generateTaskList(source) {
 
 		const button = `<a href="${buttonLink}"><button>${buttonAction}</button></a>`;
 
-		return `${index +1}. ${task.task} [${task.completed}] [${index}] ${button} ${deleteButton}<br>`;
+		return `${index +1}. ${task.task} ${button} ${deleteButton}<br>`;
 
 	}).join('');
 }

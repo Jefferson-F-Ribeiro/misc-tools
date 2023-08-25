@@ -4,8 +4,6 @@ const taskmaster = require('./taskmaster');
 
 const server = http.createServer((req, res) => {
 	const url = new URL(req.url, `http://${req.headers.host}`);
-	console.log(taskmaster.tasks);
-	console.log(taskmaster.done);
 	
 	if(req.url == '/'){
 		res.statusCode = 200;
@@ -55,7 +53,7 @@ const server = http.createServer((req, res) => {
 		const index = parseInt(url.pathname.split('/taskmaster/deletetask/task/')[1]);
 		if (!isNaN(index)) {
 			
-			taskmaster.deleteTask(index, taskmaster.tasks);
+			taskmaster.deleteTask(index);
 			res.writeHead(302, { Location: '/taskmaster'});
 			res.end();
 		} else {
@@ -69,7 +67,7 @@ const server = http.createServer((req, res) => {
 		const index = parseInt(url.pathname.split('/taskmaster/deletetask/done/')[1]);
 		if (!isNaN(index)) {
 			
-			taskmaster.deleteTask(index, taskmaster.done);
+			taskmaster.deleteDone(index);
 			res.writeHead(302, { Location: '/taskmaster'});
 			res.end();
 		} else {
