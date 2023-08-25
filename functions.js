@@ -42,7 +42,11 @@ function generateTaskmasterPage(){
 	const tasks = taskmaster.getTasks();
 	const decodedTasks = decodeTasks(tasks);
 	const taskList = generateTaskList(decodedTasks);
-	const completedList = generateCompletedTaskList(decodedTasks);
+	
+
+	const done = taskmaster.getDones();
+	const decodedDone = decodeTasks(done);
+	const doneList = generateTaskList(decodedDone);
 
 
 	r = `
@@ -53,7 +57,7 @@ function generateTaskmasterPage(){
 		${taskList}
 		<br>
 		<h2> Concluídas: </h2>
-		${completedList}
+		${doneList}
 		<br>
 		<form action="/taskmaster/addtask" method="post"> 
 		<label for= "task">Nova Tarefa: </label>
@@ -94,45 +98,27 @@ function decodeTasks(tasks) {
 	});
 }
 
-function generateTaskList(tasks) {
-	const incompleteTasks = [];
-	for(let i = 0; i < tasks.length; i++){
-		if(!tasks[i].completed){
-			incompleteTasks.push(tasks[i]);
-		}
-	}
+function generateTaskList(source) {
 
-	return incompleteTasks.map((task, index) => {
+	return source.map((task, index) => {
 		const buttonAction = task.completed
 		? 'Relistar' : 'Concluir';
+
 		const buttonLink = task.completed
 		? `/taskmaster/relisttask/${index}`
 		: `/taskmaster/completetask/${index}`;
-		const deleteLink = `/taskmaster/deletetask/${index}`;
-		const deleteButton = `<a href="${deleteLink}"><button>Deletar</button></a>`;
-		const button = `<a href="${buttonLink}"><button>${buttonAction}</button></a>`;
-		return `${index +1}. ${task.task} [${task.completed}] [${index}] ${button} ${deleteButton}<br>`;
-	}).join('');
-}
+		
+		const path = !task.completed
+		? `/taskmaster/deletetask/done/${index}` : `/taskmaster/deletetask/task/${index}`;
 
-function generateCompletedTaskList(tasks) {
-	const completedTasks = [];
-	for(let i = 0; i < tasks.length; i++){
-		if(tasks[i].completed){
-			completedTasks.push(tasks[i]);
-		}
-	}
+		const deleteLink = path;
 
-	return completedTasks.map((task, index) => {
-		const buttonAction = task.completed
-		? 'Relistar' : 'Concluir';
-		const buttonLink = task.completed
-		? `/taskmaster/relisttask/${index}`
-		: `/taskmaster/completetask/${index}`;
-		const deleteLink = `/taskmaster/deletetask/${index}`;
 		const deleteButton = `<a href="${deleteLink}"><button>Deletar</button></a>`;
+
 		const button = `<a href="${buttonLink}"><button>${buttonAction}</button></a>`;
+
 		return `${index +1}. ${task.task} [${task.completed}] [${index}] ${button} ${deleteButton}<br>`;
+
 	}).join('');
 }
 

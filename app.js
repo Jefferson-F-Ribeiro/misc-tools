@@ -4,6 +4,8 @@ const taskmaster = require('./taskmaster');
 
 const server = http.createServer((req, res) => {
 	const url = new URL(req.url, `http://${req.headers.host}`);
+	console.log(taskmaster.tasks);
+	console.log(taskmaster.done);
 	
 	if(req.url == '/'){
 		res.statusCode = 200;
@@ -49,10 +51,25 @@ const server = http.createServer((req, res) => {
 
 	}
 
-	else if(req.url.startsWith('/taskmaster/deletetask/')){
-		const index = parseInt(url.pathname.split('/taskmaster/deletetask/')[1]);
+	else if(req.url.startsWith('/taskmaster/deletetask/task/')){
+		const index = parseInt(url.pathname.split('/taskmaster/deletetask/task/')[1]);
 		if (!isNaN(index)) {
-			taskmaster.deleteTask(index);
+			
+			taskmaster.deleteTask(index, taskmaster.tasks);
+			res.writeHead(302, { Location: '/taskmaster'});
+			res.end();
+		} else {
+			res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8'});
+			res.end('404 página não encontrada\n');	
+		}
+
+	}
+
+	else if(req.url.startsWith('/taskmaster/deletetask/done/')){
+		const index = parseInt(url.pathname.split('/taskmaster/deletetask/done/')[1]);
+		if (!isNaN(index)) {
+			
+			taskmaster.deleteTask(index, taskmaster.done);
 			res.writeHead(302, { Location: '/taskmaster'});
 			res.end();
 		} else {
